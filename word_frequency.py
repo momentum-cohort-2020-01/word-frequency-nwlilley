@@ -6,41 +6,49 @@ STOP_WORDS = [
     'will', 'with'
 ]
 
+def open_file ():
+    with open('seneca_falls.txt') as file:
+        return file.read()
+    
 
-with open('seneca_falls.txt') as file:
-    text = file.read()
+def remove_punctuation(file):
+    no_punct = ""
+    punctuations = '''!()-[]{};:'"\,<>./?@#$%^&*_~'''
+    for char in file:
+        if char not in punctuations:
+            no_punct+= char
+    return no_punct
 
-no_punct = ""
-punctuations = '''!()-[]{};:'"\,<>./?@#$%^&*_~'''
-for char in text:
-    if char not in punctuations:
-        no_punct+= char
+def lowercase_and_split(file):
+    x = file.lower().split(" ")
+    return x
+# list_words = lowered.split(" ")
 
-lowered = no_punct.lower()
+def remove_stops (file):
+    stops_removed = []
+    i = 0
+    while i < len(file):
+        if file[i] not in STOP_WORDS:
+            stops_removed.append(file[i])
+        i+= 1
+    return stops_removed
 
-list_words = lowered.split(" ")
+def count_and_sort (file):
+    word_count = dict(Counter(file))
+    # word_dict = dict(word_count)
+    word_count = {k: v for k, v in sorted(word_count.items(), key = lambda item: item[1], reverse=True)}
+    return word_count
 
-print(len(list_words))
-stops_removed = []
-i = 0
-while i < len(list_words):
-    if list_words[i] not in STOP_WORDS:
-        stops_removed.append(list_words[i])
-    i+= 1
-
-# for word in stops_removed:
+def render_dict (file):
+    for word, num in file.items():
+        print(f"{word} | {num} " + num * "*")
 
 
+render_dict(count_and_sort(remove_stops(lowercase_and_split(remove_punctuation(open_file())))))
 
-word_count = Counter(stops_removed)
-# print(word_count)
-word_dict = dict(word_count)
-word_dict = {k: v for k, v in sorted(word_dict.items(), key = lambda item: item[1], reverse=True)}
 
-print(word_dict)
 
-for word, num in word_dict.items():
-    print(f"{word} | {num} " + num * "*")
+
 
 # def print_word_freq(file):
     
