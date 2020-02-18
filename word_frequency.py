@@ -35,10 +35,12 @@ while i < len(list_words):
 word_count = Counter(stops_removed)
 # print(word_count)
 word_dict = dict(word_count)
-# print(word_dict)
+word_dict = {k: v for k, v in sorted(word_dict.items(), key = lambda item: item[1], reverse=True)}
+
+print(word_dict)
 
 for word, num in word_dict.items():
-    print(f"{word} | {num}")
+    print(f"{word} | {num} " + num * "*")
 
 # def print_word_freq(file):
     
