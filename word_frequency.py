@@ -6,11 +6,10 @@ STOP_WORDS = [
     'will', 'with'
 ]
 
-def open_file ():
-    with open('seneca_falls.txt') as file:
+def open_file (file):
+    with open(file) as file:
         return file.read()
     
-
 def remove_punctuation(file):
     no_punct = ""
     punctuations = '''!()-[]{};:'"\,<>./?@#$%^&*_~'''
@@ -22,7 +21,6 @@ def remove_punctuation(file):
 def lowercase_and_split(file):
     x = file.lower().split(" ")
     return x
-# list_words = lowered.split(" ")
 
 def remove_stops (file):
     stops_removed = []
@@ -35,7 +33,6 @@ def remove_stops (file):
 
 def count_and_sort (file):
     word_count = dict(Counter(file))
-    # word_dict = dict(word_count)
     word_count = {k: v for k, v in sorted(word_count.items(), key = lambda item: item[1], reverse=True)}
     return word_count
 
@@ -43,16 +40,19 @@ def render_dict (file):
     for word, num in file.items():
         print(f"{word} | {num} " + num * "*")
 
+# render_dict(count_and_sort(remove_stops(lowercase_and_split(remove_punctuation(open_file())))))
 
-render_dict(count_and_sort(remove_stops(lowercase_and_split(remove_punctuation(open_file())))))
+def print_word_freq(file):
+    print(f"Word frequencies in file: {file}")
+    text = open_file(file)
+    text = remove_punctuation(text)
+    text = lowercase_and_split(text)
+    text = remove_stops(text)
+    text = count_and_sort(text)
+    render_dict(text)
 
-
-
-
-
-# def print_word_freq(file):
-    
-#     pass
+print_word_freq('seneca_falls.txt')
+print_word_freq('emancipation_proclamation.txt')
 
 
 if __name__ == "__main__":
